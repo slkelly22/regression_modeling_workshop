@@ -1,0 +1,280 @@
+---
+title: "Regression Modeling in R: Week 1"
+author: "S.Kelly"
+format: 
+  revealjs: 
+    code-overflow: wrap
+    footer: "S.Kelly | Regression Modeling in R | Spring 2026"
+editor: visual
+execute: 
+  echo: true
+---
+
+## Setting up for Success
+
+Before we get started, let's get everything ready: <br>
+
+-   Set up an R Project
+
+-   Create a data folder with the `dir.create()` function
+
+-   Remember to comment your code `#`
+
+-   I'm working from a Quarto .qmd file, you will have a standard .R syntax file
+
+## Why Statistics in R?
+
+It's free, and you can track and reproduce every single step!
+
+![SPSS](images/SPSS.png){width="600"}
+
+## Why are trying to do in 4 weeks? 
+
+- Have a basic understanding of running regressions in R
+
+- Troubleshooting commons issues, i.e., What's wrong with this picture? 
+
+- Understanding model diagnostics
+
+- Confidently interpreting coefficients
+
+## Linear Regression Considerations
+
+1.  Continuous outcome (Y) with a relatively normal distribution
+2.  We are modeling a linear relationship between X and Y (linear in the parameters)
+3.  The residuals should be independent (no clustering!)
+4.  The residual variance should be relatively equal (homoscedasticity)
+
+## Linear Regression in R
+
+Today we're going to use a dataset from `Multilevel Modeling Using R` by Finch and Bolin. You can access the `Cassady` data from [www.mlminr.com.](https://www.mlminr.com/data-sets)
+
+![](images/MLMBook.png)
+
+## Let's read in a csv file
+
+```{r}
+#| echo: TRUE
+# install.packages("tidyverse", "car")
+library(tidyverse)
+```
+
+```{r}
+#| echo: TRUE
+students <- read_csv("data/cassady_finch_bolin.csv")
+head(students, 4)
+```
+
+## Quick Look at the Data
+
+```{r}
+summary(students)
+```
+
+## Outcome Variable
+
+Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution.
+
+```{r}
+students |> 
+  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5)
+```
+
+## Linear Regression
+
+> Is there a relationship between physical (BStotal) and cognitive academic anxiety (CTA.tot) and GPA?
+
+Let's run a few quick correlation coefficients (standardized covariation).
+
+There are several ways to run correlations in R. Base R has the `cor()` function. The default method is Pearson's Correlation Coefficient.
+
+```{r}
+cor(students$GPA, students$CTA.tot, use = "pairwise.complete.obs") 
+cor(students$GPA, students$BStotal, use = "pairwise.complete.obs") 
+```
+
+## Linear Regression
+
+Let's look at the relationship between cognitive academic anxiety and GPA.
+
+What's wrong with this scatterplot?
+
+```{r}
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point()
+```
+
+## Linear Regression
+
+A quick change to the range of the y-axis and you can see the relationship between variables.
+
+```{r}
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
+  geom_smooth(method = "lm") + ylim(0, 4)
+```
+
+## Linear Regression
+
+Let's look at the relationshp between physical anxiety and GPA.
+
+```{r}
+ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + 
+  geom_smooth(method = "lm") + ylim(0,4)
+```
+
+## Thinking about Outliers
+
+Who is this wacky outlier that keeps showing up in my plots?
+
+```{r}
+ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + ylim(0,4)
+```
+
+## Thinking about Outliers
+
+Who is this wacky outlier that keeps showing up in my plots?
+
+```{r}
+students |> 
+  select(Gender:GPA, BStotal:CTA.tot) |> 
+  filter(GPA < 1) 
+```
+
+## Linear Regression in R
+
+How do we write a regression formula in R?
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+model <- lm(outcome ~ predictor + predictor, data = )
+
+# this will create a lm "class" object
+```
+
+## Linear Regression in R
+
+> Is there a relationship between physical (BStotal) and cognitive academic anxiety (CTA.tot) and GPA?
+
+```{r}
+model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
+
+# this will create a lm "class" object in your environment
+class(model_gpa_anxiety)
+```
+
+## Linear Regression in R
+
+What does this all mean?
+
+```{r}
+summary(model_gpa_anxiety)
+```
+
+## Breaking Down the Variance
+
+```{r}
+anova(model_gpa_anxiety)
+```
+
+## Obtaining Confidence Intervals
+
+Reviewing the coefficients
+
+```{r}
+model_gpa_anxiety$coefficients
+```
+
+Confidence Intervals Function
+
+```{r}
+confint(model_gpa_anxiety)
+```
+
+## Predicted Outcomes
+
+Can I grab the predicted individual GPAs from the model? Yes you can.
+
+```{r}
+model_gpa_anxiety$fitted.values
+```
+
+## Can I plot the predicted GPAs?
+
+```{r}
+plot(model_gpa_anxiety$fitted.values)
+```
+
+## Let's take a look at the residuals
+
+```{r}
+plot(resid(model_gpa_anxiety))
+```
+
+## Checking for Model Outliers
+
+```{r}
+car::influenceIndexPlot(model_gpa_anxiety)
+```
+
+## Checking for Model Outliers
+
+```{r}
+car::outlierTest(model_gpa_anxiety)
+```
+
+### Who is 226?
+
+```{r}
+whoisit <- students |> 
+  select(Gender:GPA, BStotal, CTA.tot) |> 
+  slice(226)
+
+whoisit
+```
+
+## What if we had removed the outlier?
+
+Let's only retain people who have a GPA between 1 and 4. By default, the NAs also drop.
+
+```{r}
+students_no_outlier <- students |>  
+  filter(GPA > 1 & GPA < 4) 
+
+dim(students)
+dim(students_no_outlier)
+```
+
+## Model Again
+
+```{r}
+model_gpa_anxiety_no_outlier <- lm(GPA ~ CTA.tot + BStotal, 
+                                   data = students_no_outlier)
+
+summary(model_gpa_anxiety_no_outlier)
+```
+
+## Outliers Now?
+
+```{r}
+car::outlierTest(model_gpa_anxiety_no_outlier)
+```
+
+## Plot
+
+```{r}
+car::influenceIndexPlot(model_gpa_anxiety_no_outlier)
+```
+
+## Next Week: More Regression Modeling
+
+### - What if you want to model an interaction? *You can*
+
+### - What if you have categorical predictors? *Factors*
+
+### - What if you need to model a binary outcome? *Logistic Regression*
+
+## Additional Questions?
+
+Make an Appointment with the [Methods and Analysis Lab (MAL)](https://libraries.olemiss.edu/services/methods-and-analysis-lab/).
+
+![](images/MAL_services.png){fig-align="center"}
