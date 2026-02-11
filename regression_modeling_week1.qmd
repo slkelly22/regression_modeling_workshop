@@ -266,7 +266,7 @@ car::outlierTest(model_gpa_anxiety_no_outlier)
 car::influenceIndexPlot(model_gpa_anxiety_no_outlier)
 ```
 
-## Next Week: More Modeling
+## Where are we heading?
 
 ### - What if you want to model an interaction? *You can*
 
