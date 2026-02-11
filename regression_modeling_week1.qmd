@@ -3,6 +3,7 @@ title: "Regression Modeling in R: Week 1"
 author: "S.Kelly"
 format: 
   revealjs: 
+    theme: serif
     code-overflow: wrap
     footer: "S.Kelly | Regression Modeling in R | Spring 2026"
 editor: visual
@@ -265,7 +266,7 @@ car::outlierTest(model_gpa_anxiety_no_outlier)
 car::influenceIndexPlot(model_gpa_anxiety_no_outlier)
 ```
 
-## Next Week: More Regression Modeling
+## Next Week: More Modeling
 
 ### - What if you want to model an interaction? *You can*
 
