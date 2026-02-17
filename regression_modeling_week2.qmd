@@ -37,19 +37,39 @@ head(students, 4)
 summary(students)
 ```
 
+## Let's correct the data entry error
+
+```{r}
+students |> 
+  filter(GPA > 5) 
+```
+## Let's correct the data entry error
+
+Let's assume we checked and the GPA was 3.02, not 302. 
+
+```{r}
+students_clean <- students |> 
+  mutate(GPA = if_else(GPA > 5, 3.02, GPA))
+```
+<br>
+```{r}
+students_clean |> 
+  filter(GPA > 5) 
+```
+
 ## Outcome Variable
 
 Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution.
 
 ```{r}
-students |> 
-  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5)
+students_clean |> 
+  ggplot(aes(x = GPA)) + geom_histogram() 
 ```
 
 ## Last Week's Multiple Regression
 
 ```{r}
-model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
+model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students_clean)
 summary(model_gpa_anxiety)
 ```
 
@@ -79,7 +99,7 @@ summary(model_gpa_anxiety)
 
 ```{r}
 model_gpa_anxiety2 <- lm(GPA ~ CTA.tot + BStotal + CTA.tot:BStotal, 
-                         data = students)
+                         data = students_clean)
 summary(model_gpa_anxiety2)
 ```
 
@@ -104,8 +124,8 @@ When the interaction is significant, you need to understand the coefficients in 
 ## What about GPA by Gender?
 
 ```{r}
-students |> 
-  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5) + 
+students_clean |> 
+  ggplot(aes(x = GPA)) + geom_histogram() + 
   facet_wrap(~ Gender)
 ```
 
@@ -114,7 +134,7 @@ students |>
 We used two continuous predictors last week, but how does R handle categorical predictors? Let's look at our data again.
 
 ```{r}
-str(students)
+str(students_clean)
 ```
 
 ## Categorical Predictors
@@ -122,7 +142,7 @@ str(students)
 What does the gender variable currently look like?
 
 ```{r}
-unique(students$Gender)
+unique(students_clean$Gender)
 ```
 
 Not technically a categorical variable, but does that matter in the binary case?
@@ -131,7 +151,7 @@ Let's just proceed and see what happens when we add this as a third variable to 
 
 ```{r}
 model_gpa_anxiety_gender <- lm(GPA ~ CTA.tot + BStotal + Gender, 
-                               data = students)
+                               data = students_clean)
 ```
 
 ## How to Interpret?
@@ -147,7 +167,7 @@ summary(model_gpa_anxiety_gender)
 Let's turn the `Gender` numeric variable into a factor so we can add labels and order
 
 ```{r}
-students$gender_factor <- factor(students$Gender, 
+students_clean$gender_factor <- factor(students_clean$Gender, 
                                  levels = c(1, 2), 
                                  labels = c("Female", "Male"))
 ```
@@ -155,44 +175,44 @@ students$gender_factor <- factor(students$Gender,
 Let's look at our new factor
 
 ```{r}
-levels(students$gender_factor)
+levels(students_clean$gender_factor)
 ```
 
 ```{r}
-fct_count(students$gender_factor)
+fct_count(students_clean$gender_factor)
 ```
 
 ## With the new factor...
 
 ```{r}
 model_gpa_anxiety_gender2 <- lm(GPA ~ CTA.tot + BStotal + gender_factor, 
-                               data = students)
+                               data = students_clean)
 summary(model_gpa_anxiety_gender2)
 ```
 
 ## Make a new variable with three levels
 
 ```{r}
-students <- students %>% 
+students_clean <- students_clean |> 
   mutate(adult_group = case_when(
     Age <= 19 ~ "young",
     Age > 19 & Age <= 21 ~ "mid",
     Age > 21 ~ "older"))
 
 # How many of each?
-count(students,adult_group)
+count(students_clean,adult_group)
 ```
 
 ## But it's not a factor...
 
 ```{r}
-str(students$adult_group)
+str(students_clean$adult_group)
 ```
 
 ## Let's model GPA anyway...
 
 ```{r}
-GPA_adult <- lm(GPA ~ adult_group, data = students)
+GPA_adult <- lm(GPA ~ adult_group, data = students_clean)
 summary(GPA_adult)
 ```
 
@@ -205,25 +225,25 @@ GPA_adult$coefficients
 We need a factor to switch the reference category...
 
 ```{r}
-students$adult_fac <- factor(students$adult_group, 
+students_clean$adult_fac <- factor(students_clean$adult_group, 
                              levels = c("young", "mid", "older"))
 ```
 
 ```{r}
-levels(students$adult_fac)
+levels(students_clean$adult_fac)
 ```
 
 ## Now let's run the model again
 
 ```{r}
-GPA_adult2 <- lm(GPA ~ adult_fac, data = students)
+GPA_adult2 <- lm(GPA ~ adult_fac, data = students_clean)
 summary(GPA_adult2)
 ```
 
 ## Plotting with Factors
 
 ```{r}
-students |> 
+students_clean |> 
   filter(GPA <= 4) |> 
   drop_na() |> 
   ggplot(aes(x = adult_fac, y = GPA)) + geom_boxplot(fill = "slateblue")
