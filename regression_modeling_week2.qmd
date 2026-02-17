@@ -43,15 +43,18 @@ summary(students)
 students |> 
   filter(GPA > 5) 
 ```
+
 ## Let's correct the data entry error
 
-Let's assume we checked and the GPA was 3.02, not 302. 
+Let's assume we checked and the GPA was 3.02, not 302.
 
 ```{r}
 students_clean <- students |> 
   mutate(GPA = if_else(GPA > 5, 3.02, GPA))
 ```
+
 <br>
+
 ```{r}
 students_clean |> 
   filter(GPA > 5) 
@@ -274,4 +277,8 @@ summary(tv_model)
 
 ## Next Week
 
-> We're going to work through models with binary outcomes -- logistic regression!
+> We'll work through models with binary outcomes -- logistic regression!
+
+## Upcoming Event!
+
+![](images/GMAS_Event_Spring2026.png){fig-align="center"}
