@@ -29,15 +29,15 @@ It's free, and you can track and reproduce every single step!
 
 ![SPSS](images/SPSS.png){width="600"}
 
-## Why are trying to do in 4 weeks? 
+## Why are trying to do in 4 weeks?
 
-- Have a basic understanding of running regressions in R
+-   Have a basic understanding of running regressions in R
 
-- Troubleshooting commons issues, i.e., What's wrong with this picture? 
+-   Troubleshooting commons issues, i.e., What's wrong with this picture?
 
-- Understanding model diagnostics
+-   Understanding model diagnostics
 
-- Confidently interpreting coefficients
+-   Confidently interpreting coefficients
 
 ## Linear Regression Considerations
 
