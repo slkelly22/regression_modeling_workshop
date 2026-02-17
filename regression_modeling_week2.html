@@ -410,7 +410,7 @@ S.Kelly
 <section id="lets-read-in-the-cassady-data" class="slide level2">
 <h2>Let’s read in the Cassady Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># install.packages("tidyverse", "car")</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># install.packages("tidyverse")</span></span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
@@ -671,7 +671,7 @@ Model 2: GPA ~ CTA.tot + BStotal + CTA.tot:BStotal
 <ul>
 <li><p>If categorical, create regression lines by group; easy to do in ggplot</p></li>
 <li><p>If continuous, you can calculate the predicted values of the outcome at particular values in the predictor</p></li>
-<li><p>For more details see the <code>interactions</code> and <code>emmeans</code> packages.</p></li>
+<li><p>For more details see the <code>interactions</code> and <code>emmeans</code> packages. We’ll also return to this in Week 4.</p></li>
 </ul>
 </section>
 <section id="what-about-gpa-by-gender" class="slide level2">
@@ -826,17 +826,33 @@ F-statistic: 24.69 on 3 and 425 DF,  p-value: 0.00000000000000954</code></pre>
 </div>
 </div>
 </section>
-<section id="make-a-new-variable-with-three-levels" class="slide level2">
-<h2>Make a new variable with three levels</h2>
+<section id="am-i-sure" class="slide level2">
+<h2>Am I sure?</h2>
+<p>Checking the average GPA by gender</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>students_clean <span class="ot">&lt;-</span> students_clean <span class="sc">|&gt;</span> </span>
-<span id="cb36-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">adult_group =</span> <span class="fu">case_when</span>(</span>
-<span id="cb36-3"><a href=""></a>    Age <span class="sc">&lt;=</span> <span class="dv">19</span> <span class="sc">~</span> <span class="st">"young"</span>,</span>
-<span id="cb36-4"><a href=""></a>    Age <span class="sc">&gt;</span> <span class="dv">19</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">21</span> <span class="sc">~</span> <span class="st">"mid"</span>,</span>
-<span id="cb36-5"><a href=""></a>    Age <span class="sc">&gt;</span> <span class="dv">21</span> <span class="sc">~</span> <span class="st">"older"</span>))</span>
-<span id="cb36-6"><a href=""></a></span>
-<span id="cb36-7"><a href=""></a><span class="co"># How many of each?</span></span>
-<span id="cb36-8"><a href=""></a><span class="fu">count</span>(students_clean,adult_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>students_clean <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href=""></a>  <span class="fu">group_by</span>(gender_factor) <span class="sc">|&gt;</span> </span>
+<span id="cb36-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">gender_GPA =</span> <span class="fu">mean</span>(GPA, <span class="at">na.rm =</span> T))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  gender_factor gender_GPA
+  &lt;fct&gt;              &lt;dbl&gt;
+1 Female              3.19
+2 Male                2.99</code></pre>
+</div>
+</div>
+</section>
+<section id="new-variable-with-three-levels" class="slide level2">
+<h2>New variable with three levels</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>students_clean <span class="ot">&lt;-</span> students_clean <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">adult_group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb38-3"><a href=""></a>    Age <span class="sc">&lt;=</span> <span class="dv">19</span> <span class="sc">~</span> <span class="st">"young"</span>,</span>
+<span id="cb38-4"><a href=""></a>    Age <span class="sc">&gt;</span> <span class="dv">19</span> <span class="sc">&amp;</span> Age <span class="sc">&lt;=</span> <span class="dv">21</span> <span class="sc">~</span> <span class="st">"mid"</span>,</span>
+<span id="cb38-5"><a href=""></a>    Age <span class="sc">&gt;</span> <span class="dv">21</span> <span class="sc">~</span> <span class="st">"older"</span>))</span>
+<span id="cb38-6"><a href=""></a></span>
+<span id="cb38-7"><a href=""></a><span class="co"># How many of each?</span></span>
+<span id="cb38-8"><a href=""></a><span class="fu">count</span>(students_clean,adult_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   adult_group     n
@@ -851,7 +867,7 @@ F-statistic: 24.69 on 3 and 425 DF,  p-value: 0.00000000000000954</code></pre>
 <section id="but-its-not-a-factor" class="slide level2">
 <h2>But it’s not a factor…</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">str</span>(students_clean<span class="sc">$</span>adult_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">str</span>(students_clean<span class="sc">$</span>adult_group)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> chr [1:486] "mid" "mid" "mid" "older" "mid" "mid" "mid" "mid" "mid" "mid" ...</code></pre>
 </div>
@@ -860,8 +876,8 @@ F-statistic: 24.69 on 3 and 425 DF,  p-value: 0.00000000000000954</code></pre>
 <section id="lets-model-gpa-anyway" class="slide level2">
 <h2>Let’s model GPA anyway…</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>GPA_adult <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> adult_group, <span class="at">data =</span> students_clean)</span>
-<span id="cb40-2"><a href=""></a><span class="fu">summary</span>(GPA_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>GPA_adult <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> adult_group, <span class="at">data =</span> students_clean)</span>
+<span id="cb42-2"><a href=""></a><span class="fu">summary</span>(GPA_adult)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -889,7 +905,7 @@ F-statistic: 1.642 on 2 and 463 DF,  p-value: 0.1947</code></pre>
 <section id="whats-our-reference-category" class="slide level2">
 <h2>What’s our reference category?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>GPA_adult<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>GPA_adult<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     (Intercept) adult_groupolder adult_groupyoung 
       3.13055709      -0.10366945       0.01642018 </code></pre>
@@ -897,11 +913,11 @@ F-statistic: 1.642 on 2 and 463 DF,  p-value: 0.1947</code></pre>
 </div>
 <p>We need a factor to switch the reference category…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>students_clean<span class="sc">$</span>adult_fac <span class="ot">&lt;-</span> <span class="fu">factor</span>(students_clean<span class="sc">$</span>adult_group, </span>
-<span id="cb44-2"><a href=""></a>                             <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"young"</span>, <span class="st">"mid"</span>, <span class="st">"older"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>students_clean<span class="sc">$</span>adult_fac <span class="ot">&lt;-</span> <span class="fu">factor</span>(students_clean<span class="sc">$</span>adult_group, </span>
+<span id="cb46-2"><a href=""></a>                             <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"young"</span>, <span class="st">"mid"</span>, <span class="st">"older"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">levels</span>(students_clean<span class="sc">$</span>adult_fac)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">levels</span>(students_clean<span class="sc">$</span>adult_fac)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "young" "mid"   "older"</code></pre>
 </div>
@@ -910,8 +926,8 @@ F-statistic: 1.642 on 2 and 463 DF,  p-value: 0.1947</code></pre>
 <section id="now-lets-run-the-model-again" class="slide level2">
 <h2>Now let’s run the model again</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>GPA_adult2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> adult_fac, <span class="at">data =</span> students_clean)</span>
-<span id="cb47-2"><a href=""></a><span class="fu">summary</span>(GPA_adult2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>GPA_adult2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> adult_fac, <span class="at">data =</span> students_clean)</span>
+<span id="cb49-2"><a href=""></a><span class="fu">summary</span>(GPA_adult2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -939,18 +955,17 @@ F-statistic: 1.642 on 2 and 463 DF,  p-value: 0.1947</code></pre>
 <section id="plotting-with-factors" class="slide level2">
 <h2>Plotting with Factors</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>students_clean <span class="sc">|&gt;</span> </span>
-<span id="cb49-2"><a href=""></a>  <span class="fu">filter</span>(GPA <span class="sc">&lt;=</span> <span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb49-3"><a href=""></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb49-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> adult_fac, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"slateblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a>students_clean <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a href=""></a>  <span class="fu">drop_na</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb51-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> adult_fac, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">fill =</span> <span class="st">"slateblue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="regression_modeling_week2_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
-<section id="activity" class="slide level2">
-<h2>Activity</h2>
-<p>You will have access to the <code>gss_cat</code> data that lives inside the <code>forcats</code> package (part of tidyverse).</p>
+<img data-src="regression_modeling_week2_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" class="r-stretch"></section>
+<section id="bonus-activity" class="slide level2">
+<h2>Bonus Activity</h2>
+<p>You have access to the <code>gss_cat</code> data that lives inside the <code>forcats</code> package (part of tidyverse).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="fu">summary</span>(gss_cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">summary</span>(gss_cat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      year               marital           age                    race      
  Min.   :2000   No answer    :   17   Min.   :18.00   Other         : 1959  
@@ -979,16 +994,16 @@ F-statistic: 1.642 on 2 and 463 DF,  p-value: 0.1947</code></pre>
 </div>
 </div>
 </section>
-<section id="activity-1" class="slide level2">
-<h2>Activity</h2>
-<p>I want you to create a linear model predicting <code>tvhours</code>. Use <code>age</code> and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients.</p>
+<section id="bonus-activity-1" class="slide level2">
+<h2>Bonus Activity</h2>
+<p>Create a linear model predicting <code>tvhours</code>. Use <code>age</code> and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="co"># check the levels</span></span>
-<span id="cb52-2"><a href=""></a><span class="fu">levels</span>(gss_cat<span class="sc">$</span> ? )</span>
-<span id="cb52-3"><a href=""></a></span>
-<span id="cb52-4"><a href=""></a><span class="co"># create the model</span></span>
-<span id="cb52-5"><a href=""></a>tv_model <span class="ot">&lt;-</span> <span class="fu">lm</span>( ? <span class="sc">~</span> ? <span class="sc">+</span> ? , <span class="at">data =</span> ? )</span>
-<span id="cb52-6"><a href=""></a><span class="fu">summary</span>(tv_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="co"># check the levels</span></span>
+<span id="cb54-2"><a href=""></a><span class="fu">levels</span>(gss_cat<span class="sc">$</span> ? )</span>
+<span id="cb54-3"><a href=""></a></span>
+<span id="cb54-4"><a href=""></a><span class="co"># create the model</span></span>
+<span id="cb54-5"><a href=""></a>tv_model <span class="ot">&lt;-</span> <span class="fu">lm</span>( ? <span class="sc">~</span> ? <span class="sc">+</span> ? , <span class="at">data =</span> ? )</span>
+<span id="cb54-6"><a href=""></a><span class="fu">summary</span>(tv_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="next-week" class="slide level2">
@@ -997,8 +1012,8 @@ F-statistic: 1.642 on 2 and 463 DF,  p-value: 0.1947</code></pre>
 <p>We’ll work through models with binary outcomes – logistic regression!</p>
 </blockquote>
 </section>
-<section id="upcoming-event" class="slide level2">
-<h2>Upcoming Event!</h2>
+<section id="upcoming-event-march-17th" class="slide level2">
+<h2>Upcoming Event: March 17th</h2>
 
 <img data-src="images/GMAS_Event_Spring2026.png" class="quarto-figure quarto-figure-center r-stretch"><div class="quarto-auto-generated-content">
 <div class="footer footer-default">

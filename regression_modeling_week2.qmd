@@ -21,7 +21,7 @@ execute:
 
 ```{r}
 #| echo: TRUE
-# install.packages("tidyverse", "car")
+# install.packages("tidyverse")
 library(tidyverse)
 ```
 
@@ -122,7 +122,7 @@ When the interaction is significant, you need to understand the coefficients in 
 
 -   If continuous, you can calculate the predicted values of the outcome at particular values in the predictor
 
--   For more details see the `interactions` and `emmeans` packages.
+-   For more details see the `interactions` and `emmeans` packages. We'll also return to this in Week 4.
 
 ## What about GPA by Gender?
 
@@ -193,7 +193,17 @@ model_gpa_anxiety_gender2 <- lm(GPA ~ CTA.tot + BStotal + gender_factor,
 summary(model_gpa_anxiety_gender2)
 ```
 
-## Make a new variable with three levels
+## Am I sure? 
+
+Checking the average GPA by gender
+
+```{r}
+students_clean |> 
+  group_by(gender_factor) |> 
+  summarize(gender_GPA = mean(GPA, na.rm = T))
+```
+
+## New variable with three levels
 
 ```{r}
 students_clean <- students_clean |> 
@@ -247,22 +257,21 @@ summary(GPA_adult2)
 
 ```{r}
 students_clean |> 
-  filter(GPA <= 4) |> 
   drop_na() |> 
   ggplot(aes(x = adult_fac, y = GPA)) + geom_boxplot(fill = "slateblue")
 ```
 
-## Activity
+## Bonus Activity
 
-You will have access to the `gss_cat` data that lives inside the `forcats` package (part of tidyverse).
+You have access to the `gss_cat` data that lives inside the `forcats` package (part of tidyverse).
 
 ```{r}
 summary(gss_cat)
 ```
 
-## Activity
+## Bonus Activity
 
-I want you to create a linear model predicting `tvhours`. Use `age` and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients.
+Create a linear model predicting `tvhours`. Use `age` and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients.
 
 ```{r}
 #| echo: TRUE
@@ -279,6 +288,6 @@ summary(tv_model)
 
 > We'll work through models with binary outcomes -- logistic regression!
 
-## Upcoming Event!
+## Upcoming Event: March 17th
 
 ![](images/GMAS_Event_Spring2026.png){fig-align="center"}
