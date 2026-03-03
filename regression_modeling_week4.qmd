@@ -30,15 +30,23 @@ There is a `county` dataset inside the usdata package that we want to use. Let's
 summary(county)
 ```
 
-## Visualizing Correlation
+## Correlation
 
-We only want the numeric variables for our correlation plot so let's create a new object.
+We only want numeric variables for our correlation plot so let's create a new object.
 
 ```{r}
 county_numeric <- county |> 
   select_if(is.numeric)
 
 head(county_numeric)
+```
+
+## Correlation
+
+There are many different ways to obtain correlation in R. The most basic is the `cor` function from Base R
+
+```{r}
+cor(county_numeric, use = "complete.obs")
 ```
 
 ## Visualizing Correlation
@@ -70,14 +78,11 @@ library(interactions)
 
 ## What is an interaction?
 
-An interaction is when a predictor's (X) effect on the outcome (Y) varies based on the values of another predictor (Z) in your model.\
-In other words, X's effect on Y is contingent on Z.\
-An interaction is also refered to as a moderated relationship.
+An interaction is when a predictor's (X) effect on the outcome (Y) varies based on the values of another predictor (Z) in your model.<br><br> In other words, X's effect on Y is contingent on Z.<br><br> An interaction is also refered to as a moderated relationship.
 
 ## Regression with an Interaction
 
-Outcome: Unemployment Rate\
-Predictors: Homeownership, Median Education, and the interaction between the two predictors
+Outcome: Unemployment Rate<br><br> Predictors: Homeownership, Median Education, and the interaction between the two predictors
 
 ```{r}
 modelA <- lm(unemployment_rate ~ homeownership + median_edu + 
@@ -186,16 +191,35 @@ Change the function to `cat_plot` when both the predictor and moderator are cate
 cat_plot(modelC, pred = median_edu, modx = metro)
 ```
 
+## Regression Modeling in R
+
+What we covered in Four Weeks: 
+
+`Week 1`: linear regression with lm(), anova(), CIs, fitted values, residuals, outliers
+<br>
+`Week 2`: multiple regression, setting up interactions, categorical predictors | factors | ref levels
+<br>
+`Week 3`: logistic regression with glm(), log odds | ORs | probabilities, estimated marginal means
+<br>
+`Week 4`: correlation plots, significant interactions, simple slopes analysis
+
+## Upcoming R Workshops
+<br>
+<br>
+`Intermediate R for Data Analysis` series will run March 25, April 1, 8, & 15. Wednesdays from 2:00 - 3:00. 
+<br>
+<br>
+`From Markdown to Website: Launch Your Academic Site with Quarto` will be Friday, April 10th, from 1:00 - 3:30.
+
 ## More Statistics?!
 
-![](images/MAL.png){width="800"}
+![](images/MAL_3.3.26.png)
 
 Submit a [Methods and Analysis Lab](https://libraries.olemiss.edu/services/methods-and-analysis-lab/) Consultation. It's free and we're friendly!
 
-
 ## Final Workshop Series Feedback
 
-
+![](images/RegModeling_QRFeedback.png){fig-align="center"}
 
 You can always email me at `slkelly@olemiss.edu` or `slkelly@go.olemiss.edu`
 
