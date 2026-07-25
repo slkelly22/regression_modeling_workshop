@@ -46,6 +46,7 @@ The relationship is not linear. The residuals will not be normally distributed. 
 ```{r}
 ggplot(Mroz, aes(x = age, y = as.numeric(lfp))) + geom_point() 
 ```
+
 ## Probability? Odds?
 
 <br>
@@ -62,9 +63,7 @@ Odds is the $\frac{success}{failure}$ so $\frac{1}{2}$ so .5 odds
 
 > Logit(Y) = Ln(odds of success) = log odds
 
-$$
-ln\frac{p}{1-p}
-$$
+$$ln\frac{p}{1-p}$$
 
 The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function \[John Fox\]
 
@@ -195,19 +194,18 @@ plot(activity_prob)
 
 Logistic regression is a powerful modeling tool for binary outcomes.
 
--   use the glm() function rather than lm() function
+- use the glm() function rather than lm() function
 
--   be aware of the difference between log odds, odds ratios, and probabilities
+- be aware of the difference between log odds, odds ratios, and probabilities
 
--   both the car and modelbased packages are very useful in modeling glms
+- both the car and modelbased packages are very useful in modeling glms
 
 ## Next Week
 
--   Visual Correlation Plots
+- Visual Correlation Plots
 
--   Regression with Significiant Interactions
+- Regression with Significiant Interactions
 
--   Simple Slopes Analysis and Visualization
+- Simple Slopes Analysis and Visualization
 
--   Final Workshop Series Feedback
-
+- Final Workshop Series Feedback

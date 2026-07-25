@@ -143,11 +143,11 @@ anova(model_gpa_anxiety, model_gpa_anxiety2)
 
 When the interaction is significant, you need to understand the coefficients in the context of that interaction.
 
--   If categorical, create regression lines by group; easy to do in ggplot
+- If categorical, create regression lines by group; easy to do in ggplot
 
--   If continuous, you can calculate the predicted values of the outcome at particular values in the predictor
+- If continuous, you can calculate the predicted values of the outcome at particular values in the predictor
 
--   For more details see the `interactions` and `emmeans` packages. We'll also return to this in Week 4.
+- For more details see the `interactions` and `emmeans` packages. We'll also return to this in Week 4.
 
 ## What about GPA by Gender?
 
@@ -218,7 +218,7 @@ model_gpa_anxiety_gender2 <- lm(GPA ~ CTA.tot + BStotal + gender_factor,
 summary(model_gpa_anxiety_gender2)
 ```
 
-## Am I sure? 
+## Am I sure?
 
 Checking the average GPA by gender
 

@@ -15,13 +15,13 @@ execute:
 
 Before we get started, let's get everything ready: <br>
 
--   Set up an R Project
+- Set up an R Project
 
--   Create a data folder with the `dir.create()` function
+- Create a data folder with the `dir.create()` function
 
--   Remember to comment your code `#`
+- Remember to comment your code `#`
 
--   I'm working from a Quarto .qmd file, you will have a standard .R syntax file
+- I'm working from a Quarto .qmd file, you will have a standard .R syntax file
 
 ## Why Statistics in R?
 
@@ -31,13 +31,13 @@ It's free, and you can track and reproduce every single step!
 
 ## Why are trying to do in 4 weeks?
 
--   Have a basic understanding of running regressions in R
+- Have a basic understanding of running regressions in R
 
--   Troubleshooting commons issues, i.e., What's wrong with this picture?
+- Troubleshooting commons issues, i.e., What's wrong with this picture?
 
--   Understanding model diagnostics
+- Understanding model diagnostics
 
--   Confidently interpreting coefficients
+- Confidently interpreting coefficients
 
 ## Linear Regression Considerations
 
