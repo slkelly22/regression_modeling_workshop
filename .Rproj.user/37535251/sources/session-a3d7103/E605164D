@@ -1,0 +1,31 @@
+{
+    "id": "E605164D",
+    "path": "~/Desktop/R Directory/regression_modeling_workshop/reg_modeling_fall_2026/regression_modeling_week4.qmd",
+    "project_path": "reg_modeling_fall_2026/regression_modeling_week4.qmd",
+    "type": "quarto_markdown",
+    "hash": "778059846",
+    "contents": "",
+    "dirty": false,
+    "created": 1785003797208.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "cursorPosition": "199,0",
+        "scrollLine": "0",
+        "rmdVisualModeLocation": "4563:3753.63623046875",
+        "rmdVisualCollapsedChunks": ""
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1785003937,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1785003937689,
+    "read_only": false,
+    "read_only_alternatives": []
+}
