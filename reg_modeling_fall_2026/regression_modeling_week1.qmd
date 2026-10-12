@@ -37,7 +37,7 @@ It's free, and you can track and reproduce every single step!
 
 - Understanding model diagnostics
 
-- Confidently interpreting coefficients
+- Confidently interpret coefficients
 
 ## Linear Regression Considerations
 
@@ -77,8 +77,7 @@ summary(students)
 Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution.
 
 ```{r}
-students |> 
-  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5)
+ggplot(students, aes(x = GPA)) + geom_histogram() + xlim(1, 5)
 ```
 
 ## Linear Regression
@@ -162,6 +161,10 @@ model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
 # this will create a lm "class" object in your environment
 class(model_gpa_anxiety)
 ```
+
+## Linear Regression in R
+
+By default, lm() uses `listwise deletion` so that any observation with missing data on any variable in the model is automatically excluded. <br> <br> In our case, the observation with the outlier GPA (302) is dropped because that person didn't have a CTA.tot value. The model is fit only on complete cases. <br> <br> If GPA wasn't dropped, we would definitely have different coefficients. 
 
 ## Linear Regression in R
 
