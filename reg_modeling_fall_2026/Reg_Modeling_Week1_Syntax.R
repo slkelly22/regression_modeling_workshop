@@ -14,6 +14,13 @@ head(students, 4)
 
 summary(students)
 
+sum(complete.cases(students))
+
+students |> 
+  drop_na(GPA, CTA.tot, BStotal) |> 
+  distinct(GPA, CTA.tot, BStotal) |> 
+  nrow()
+
 # model the outcome variable
 ggplot(students, aes(x = GPA)) + geom_histogram() + xlim(1, 5) # -0.303901
 
@@ -26,4 +33,4 @@ test <- students |>
 cor(test$GPA, test$CTA.tot, use = "pairwise.complete.obs") # same b/c there's NA on CTA.tot for the person with the 300 GPA
 
 cor(students$GPA, students$BStotal, use = "pairwise.complete.obs") # -0.04030298
-cor(test$GPA, test$BStotal, use = "pairwise.complete.obs") # -0.136426
+cor(test$GPA, test$BStotal, use = "pairwise.complete.obs") # -0.136426, stronger correlation without the OUTLIER
