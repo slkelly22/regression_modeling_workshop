@@ -407,7 +407,7 @@ S.Kelly
 <p>Before we get started, let’s get everything ready: <br></p>
 <ul>
 <li><p>Set up an R Project</p></li>
-<li><p>Create a data folder with the <code>dir.create()</code> function</p></li>
+<li><p>Create a data folder with the <code>dir.create("data")</code></p></li>
 <li><p>Remember to comment your code <code>#</code></p></li>
 <li><p>I’m working from a Quarto .qmd file, you will have a standard .R syntax file</p></li>
 </ul>
@@ -420,11 +420,12 @@ S.Kelly
 <section id="why-are-trying-to-do-in-4-weeks" class="slide level2">
 <h2>Why are trying to do in 4 weeks?</h2>
 <ul>
-<li><p>Have a basic understanding of running regressions in R</p></li>
-<li><p>Troubleshooting commons issues, i.e., What’s wrong with this picture?</p></li>
-<li><p>Understanding model diagnostics</p></li>
+<li><p>Gain an overview of regression modeling in R</p></li>
+<li><p>Troubleshoot commons issues, i.e., What’s wrong with this picture?</p></li>
+<li><p>Understand model diagnostics</p></li>
 <li><p>Confidently interpret coefficients</p></li>
 </ul>
+<p><br> Let’s start with multiple linear regression!</p>
 </section>
 <section id="linear-regression-considerations" class="slide level2">
 <h2>Linear Regression Considerations</h2>
@@ -543,7 +544,7 @@ S.Kelly
 <blockquote>
 <p>Is there a relationship between physical (BStotal) and cognitive academic anxiety (CTA.tot) and GPA?</p>
 </blockquote>
-<p>Let’s run a few quick correlation coefficients (standardized covariation).</p>
+<p>Let’s run a few quick correlation coefficients (scale-invariant covariation).</p>
 <p>There are several ways to run correlations in R. Base R has the <code>cor()</code> function. The default method is Pearson’s Correlation Coefficient.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">cor</span>(students<span class="sc">$</span>GPA, students<span class="sc">$</span>CTA.tot, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

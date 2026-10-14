@@ -17,7 +17,7 @@ Before we get started, let's get everything ready: <br>
 
 - Set up an R Project
 
-- Create a data folder with the `dir.create()` function
+- Create a data folder with the `dir.create("data")`
 
 - Remember to comment your code `#`
 
@@ -31,13 +31,16 @@ It's free, and you can track and reproduce every single step!
 
 ## Why are trying to do in 4 weeks?
 
-- Have a basic understanding of running regressions in R
+- Gain an overview of regression modeling in R
 
-- Troubleshooting commons issues, i.e., What's wrong with this picture?
+- Troubleshoot commons issues, i.e., What's wrong with this picture?
 
-- Understanding model diagnostics
+- Understand model diagnostics
 
 - Confidently interpret coefficients
+
+<br>
+Let's start with multiple linear regression! 
 
 ## Linear Regression Considerations
 
@@ -84,7 +87,7 @@ ggplot(students, aes(x = GPA)) + geom_histogram() + xlim(1, 5)
 
 > Is there a relationship between physical (BStotal) and cognitive academic anxiety (CTA.tot) and GPA?
 
-Let's run a few quick correlation coefficients (standardized covariation).
+Let's run a few quick correlation coefficients (scale-invariant covariation).
 
 There are several ways to run correlations in R. Base R has the `cor()` function. The default method is Pearson's Correlation Coefficient.
 
@@ -164,7 +167,7 @@ class(model_gpa_anxiety)
 
 ## Linear Regression in R
 
-By default, lm() uses `listwise deletion` so that any observation with missing data on any variable in the model is automatically excluded. <br> <br> In our case, the observation with the outlier GPA (302) is dropped because that person didn't have a CTA.tot value. The model is fit only on complete cases. <br> <br> If GPA wasn't dropped, we would definitely have different coefficients. 
+By default, lm() uses `listwise deletion` so that any observation with missing data on any variable in the model is automatically excluded. <br> <br> In our case, the observation with the outlier GPA (302) is dropped because that person didn't have a CTA.tot value. The model is fit only on complete cases. <br> <br> If GPA wasn't dropped, we would definitely have different coefficients.
 
 ## Linear Regression in R
 

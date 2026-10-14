@@ -14,18 +14,11 @@ head(students, 4)
 
 summary(students)
 
-sum(complete.cases(students))
-
-students |> 
-  drop_na(GPA, CTA.tot, BStotal) |> 
-  distinct(GPA, CTA.tot, BStotal) |> 
-  nrow()
-
 # model the outcome variable
-ggplot(students, aes(x = GPA)) + geom_histogram() + xlim(1, 5) # -0.303901
+ggplot(students, aes(x = GPA)) + geom_histogram() + xlim(1, 5) 
 
-
-cor(students$GPA, students$CTA.tot, use = "pairwise.complete.obs")
+# correlations
+cor(students$GPA, students$CTA.tot, use = "pairwise.complete.obs") # -0.303901
 
 test <- students |> 
   filter(GPA <= 5)
@@ -34,3 +27,18 @@ cor(test$GPA, test$CTA.tot, use = "pairwise.complete.obs") # same b/c there's NA
 
 cor(students$GPA, students$BStotal, use = "pairwise.complete.obs") # -0.04030298
 cor(test$GPA, test$BStotal, use = "pairwise.complete.obs") # -0.136426, stronger correlation without the OUTLIER
+
+cor(students$CTA.tot, students$BStotal, use = "pairwise.complete.obs") # the IVS are actually strongly correlated #0.709 
+
+## scatterplot with geom_smooth
+# default is loess smooth if n < 1000
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
+  geom_smooth() + ylim(0,4)
+
+# with OLS lm method
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
+  geom_smooth(method = "lm") + ylim(0,4)
+
+# with 95% CI off
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
+  geom_smooth(method = "lm", se = FALSE) + ylim(0,4)
