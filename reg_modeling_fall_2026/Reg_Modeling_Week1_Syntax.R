@@ -42,3 +42,9 @@ ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() +
 # with 95% CI off
 ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
   geom_smooth(method = "lm", se = FALSE) + ylim(0,4)
+
+# building an linear model
+model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
+class(model_gpa_anxiety)
+
+summary(model_gpa_anxiety) 
