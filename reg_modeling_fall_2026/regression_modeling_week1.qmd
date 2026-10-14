@@ -126,7 +126,7 @@ ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() +
 
 ## Thinking about Outliers
 
-Who is this wacky outlier that keeps showing up in my plots?
+Who is this other outlier that keeps showing up in my plots?
 
 ```{r}
 ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + ylim(0,4)
