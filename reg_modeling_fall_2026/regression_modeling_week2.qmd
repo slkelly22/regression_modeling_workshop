@@ -139,16 +139,6 @@ Is the model with the interaction term a better fit?
 anova(model_gpa_anxiety, model_gpa_anxiety2)
 ```
 
-## What if it was significant?
-
-When the interaction is significant, you need to understand the coefficients in the context of that interaction.
-
-- If categorical, create regression lines by group; easy to do in ggplot
-
-- If continuous, you can calculate the predicted values of the outcome at particular values in the predictor
-
-- For more details see the `interactions` and `emmeans` packages. We'll also return to this in Week 4.
-
 ## What about GPA by Gender?
 
 ```{r}
@@ -260,7 +250,7 @@ summary(GPA_adult)
 GPA_adult$coefficients
 ```
 
-We need a factor to switch the reference category...
+We can change the reference category manually...
 
 ```{r}
 students_clean$adult_fac <- factor(students_clean$adult_group, 
@@ -278,6 +268,14 @@ GPA_adult2 <- lm(GPA ~ adult_fac, data = students_clean)
 summary(GPA_adult2)
 ```
 
+## Pairwise Comparisons
+What if you don't want to keep switching the ref category?
+```{r}
+library(emmeans)
+
+emmeans(GPA_adult2, pairwise ~ adult_fac)
+```
+
 ## Plotting with Factors
 
 ```{r}
@@ -286,7 +284,7 @@ students_clean |>
   ggplot(aes(x = adult_fac, y = GPA)) + geom_boxplot(fill = "slateblue")
 ```
 
-## Bonus Activity
+## Post-Class Activity
 
 You have access to the `gss_cat` data that lives inside the `forcats` package (part of tidyverse).
 
@@ -294,7 +292,7 @@ You have access to the `gss_cat` data that lives inside the `forcats` package (p
 summary(gss_cat)
 ```
 
-## Bonus Activity
+## Post-Class Activity
 
 Create a linear model predicting `tvhours`. Use `age` and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients.
 
