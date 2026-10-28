@@ -269,7 +269,9 @@ summary(GPA_adult2)
 ```
 
 ## Pairwise Comparisons
+
 What if you don't want to keep switching the ref category?
+
 ```{r}
 library(emmeans)
 
